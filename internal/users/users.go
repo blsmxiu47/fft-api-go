@@ -1,4 +1,4 @@
-package main
+package users
 
 import (
 	"github.com/joho/godotenv"
@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	// App struct defined in app.go
+	// TODO: defined in old app.go. refactor for new hierarchies
 	a := App{}
 	// Load environment variables
 	err := godotenv.Load("env/.env.local")
