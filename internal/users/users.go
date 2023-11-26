@@ -1,20 +1,22 @@
 package users
 
 import (
-	"github.com/joho/godotenv"
 	"log"
 	"os"
+
+	"github.com/joho/godotenv"
+	"github.com/blsmxiu47/fft-api-go/internal/core/app"
 )
 
 func main() {
-	// TODO: defined in old app.go. refactor for new hierarchies
-	a := App{}
+	// Initializing app defined in core.
+	// TODO: probably move this as we branch out to more than jut users data
+	a := &app.App{}
 	// Load environment variables
 	err := godotenv.Load("env/.env.local")
 	if err != nil {
 		log.Fatalf("Error loading .env file")
 	}
-	// This does __nothing so far__
 	a.Initialize(
 		os.Getenv("APP_DB_USERNAME"),
 		os.Getenv("APP_DB_PASSWORD"),
