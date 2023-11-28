@@ -8,8 +8,8 @@ import (
 	"os"
 	"testing"
 
-	"github.com/joho/godotenv"
 	"github.com/blsmxiu47/fft-api-go/internal/core/app"
+	"github.com/blsmxiu47/fft-api-go/internal/utils"
 )
 
 var a app.App;
@@ -26,14 +26,10 @@ CREATE TABLE IF NOT EXISTS users
 func TestMain(m *testing.M) {
 	// TODO: can we like not call this block in every single script plz
 	//   replace with project utils function to get env value given key
-	err := godotenv.Load("../../env/.env.local")
-	if err != nil{
-		log.Fatalf("Error loading .env file: %s", err)
-	}
 	a.Initialize(
-		os.Getenv("APP_DB_USERNAME"),
-		os.Getenv("APP_DB_PASSWORD"),
-		os.Getenv("APP_DB_NAME"),
+		utils.GetEnv("APP_DB_USERNAME"),
+		utils.GetEnv("APP_DB_PASSWORD"),
+		utils.GetEnv("APP_DB_NAME"),
 	)
 
 	ensureTableExists()
