@@ -28,19 +28,19 @@ func start(onStart OnStart) {
 	// TODO: gracefully handle shutdown
 }
 
-func (a *App) Initialize(user, password, dbname string) {
-    connectionString :=
-        fmt.Sprintf("user=%s password=%s dbname=%s sslmode=disable", user, password, dbname)
+func (a *App) Initialize(user string, password string, dbname string) {
+	connectionString :=
+		fmt.Sprintf("user=%s password=%s dbname=%s sslmode=disable", user, password, dbname)
 
-    var err error
-    a.DB, err = sql.Open("postgres", connectionString)
-    if err != nil {
-        log.Fatal(err)
-    }
+	var err error
+	a.DB, err = sql.Open("postgres", connectionString)
+	if err != nil {
+		log.Fatal(err)
+	}
 
-    a.Router = mux.NewRouter()
+	a.Router = mux.NewRouter()
 }
 
 func (a *App) Run(addr string) {
-    log.Fatal(http.ListenAndServe(":8010", a.Router))
+	log.Fatal(http.ListenAndServe(":8010", a.Router))
 }

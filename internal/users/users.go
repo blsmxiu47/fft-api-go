@@ -13,7 +13,8 @@ func main() {
 	// TODO: probably move this as we branch out to more than jut users data
 	a := &app.App{}
 	// Load environment variables
-	err := godotenv.Load("env/.env.local")
+	// TODO: replace with shared function
+	err := godotenv.Load("../../env/.env.local")
 	if err != nil {
 		log.Fatalf("Error loading .env file")
 	}
