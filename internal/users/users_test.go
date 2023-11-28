@@ -1,6 +1,7 @@
 package users_test
 
 import (
+	"encoding/json"
 	"log"
 	"net/http"
 	"net/http/httptest"
@@ -13,7 +14,7 @@ import (
 
 var a app.App;
 
-const tableCreationSQL = `
+const usersTableCreationSQL = `
 CREATE TABLE IF NOT EXISTS users
 (
 	id SERIAL PRIMARY KEY,
@@ -42,7 +43,7 @@ func TestMain(m *testing.M) {
 }
 
 func ensureTableExists() {
-	if _, err := a.DB.Exec(tableCreationSQL); err != nil {
+	if _, err := a.DB.Exec(usersTableCreationSQL); err != nil {
 		log.Fatal(err)
 	}
 }
@@ -65,7 +66,7 @@ func executeRequest(req *http.Request) *httptest.ResponseRecorder {
 	return rr
 }
 
-func TestTableEmpty(t *testing.T) {
+func TestUsers_TableEmpty(t *testing.T) {
 	clearTable()
 
 	req, _ := http.NewRequest("GET", "/users", nil)
@@ -79,4 +80,22 @@ func TestTableEmpty(t *testing.T) {
 	if got != want {
 		t.Errorf("Expected an empty array. Got %s", got)
 	}
+}
+
+func TestUsers_GetUser_Fail(t *testing.T) {
+    clearTable()
+
+    req, _ := http.NewRequest("GET", "/user/9999", nil)
+    response := executeRequest(req)
+
+    checkResponseCode(t, http.StatusNotFound, response.Code)
+
+    var m map[string]string
+    json.Unmarshal(response.Body.Bytes(), &m)
+
+    got := m["error"]
+    want := "User not found"
+    if got != want {
+        t.Errorf("Expected the 'error' key of the response to be set to '%s'. Got '%s'", want, got)
+    }
 }
